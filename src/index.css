@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-cyberbg text-matrix font-sharetech min-h-screen;
+  background: #0F111A;
+}
+
+@layer components {
+  .input-cyber {
+    @apply bg-black bg-opacity-60 border-2 border-matrix text-matrix font-sharetech px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyberaccent transition;
+  }
+  .btn-cyber {
+    @apply bg-black bg-opacity-80 border-2 border-cyberaccent text-cyberaccent hover:bg-cyberaccent hover:text-black shadow-lg transition font-orbitron rounded-lg;
+  }
+} 
