@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-[Poppins] text-gray-200 bg-gray-900 scroll-smooth">
+  <!-- Header / Nav -->
+  <header class="fixed top-0 left-0 w-full bg-gray-900 bg-opacity-90 shadow z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <a href="#home" class="text-2xl font-bold text-teal-400">MyName</a>
+        <nav id="nav-menu" class="hidden md:flex space-x-8">
+          <a href="#home" class="hover:text-teal-400">Home</a>
+          <a href="#about" class="hover:text-teal-400">About</a>
+          <a href="#projects" class="hover:text-teal-400">Projects</a>
+          <a href="#contact" class="hover:text-teal-400">Contact</a>
+        </nav>
+        <!-- Mobile menu button -->
+        <button id="nav-toggle" class="md:hidden text-gray-200 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="min-h-screen flex items-center justify-center pt-24 pb-16 bg-gray-900">
+    <div class="text-center">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">Hi, I'm <span class="text-teal-400">Your Name</span></h1>
+      <p class="text-xl md:text-2xl mb-8">A Passionate <span class="text-teal-400">Frontend Developer</span></p>
+      <a href="#projects" class="inline-block px-8 py-3 bg-teal-500 hover:bg-teal-600 text-gray-900 font-semibold rounded transition">View My Work</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-32 bg-gray-800">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">About Me</h2>
+      <p class="text-lg leading-relaxed text-center">I'm a self-taught developer with a keen eye for design and a passion for building intuitive, dynamic user experiences. I love turning complex problems into simple, beautiful, and intuitive designs.</p>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="py-32 bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Project Card -->
+        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <img src="https://via.placeholder.com/600x400" alt="Project 1" class="w-full h-40 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Project One</h3>
+            <p class="mb-4 text-gray-400">A brief description of the project showcasing technologies and purpose.</p>
+            <a href="#" class="text-teal-400 hover:underline" target="_blank" rel="noopener noreferrer">Live Demo</a>
+          </div>
+        </div>
+        <!-- Repeat Project Cards as needed -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-32 bg-gray-800">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-12">Get In Touch</h2>
+      <form action="#" class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <input type="text" placeholder="Name" class="w-full p-3 rounded bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          <input type="email" placeholder="Email" class="w-full p-3 rounded bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <textarea rows="5" placeholder="Message" class="w-full p-3 rounded bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+        <button type="submit" class="w-full py-3 bg-teal-500 hover:bg-teal-600 text-gray-900 font-semibold rounded transition">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-6 bg-gray-900 text-center text-gray-500">
+    © <span id="year"></span> Your Name. All rights reserved.
+  </footer>
+
+  <!-- Custom Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
