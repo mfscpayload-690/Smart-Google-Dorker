@@ -1,18 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-cyberbg text-matrix font-sharetech min-h-screen;
-  background: #0F111A;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 font-inter antialiased;
+  }
 }
 
 @layer components {
-  .input-cyber {
-    @apply bg-black bg-opacity-60 border-2 border-matrix text-matrix font-sharetech px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyberaccent transition;
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
   }
-  .btn-cyber {
-    @apply bg-black bg-opacity-80 border-2 border-cyberaccent text-cyberaccent hover:bg-cyberaccent hover:text-black shadow-lg transition font-orbitron rounded-lg;
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-gray-900 font-medium py-2 px-6 rounded-lg border border-gray-300 transition-colors duration-200 shadow-sm hover:shadow-md;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-max {
+    @apply max-w-6xl mx-auto;
   }
 } 
