@@ -4,7 +4,8 @@
 
 Smart-Google-Dorker is a modern, cyberpunk-inspired web app for crafting, previewing, and launching advanced Google dork queries. Whether you're a penetration tester, OSINT enthusiast, or just a curious mind, this tool is your digital lockpick for the world's largest search engine.
 
-![screenshot](https://github.com/mfscpayload-690/Smart-Google-Dorker/raw/main/assets/screenshot.png) <!-- Add your own screenshot if you want -->
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5ab0a188-051b-41a2-80a8-2facd18faf92" />
+
 
 ---
 
