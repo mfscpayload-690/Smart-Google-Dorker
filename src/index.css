@@ -1,18 +1,120 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-cyberbg text-matrix font-sharetech min-h-screen;
-  background: #0F111A;
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-font-smoothing: antialiased; }
+
+  body {
+    @apply bg-bg-primary text-text-primary font-sans min-h-screen;
+  }
+
+  ::selection {
+    background: rgba(59, 130, 246, 0.35);
+    color: #e2e8f0;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0d1117; }
+  ::-webkit-scrollbar-thumb { background: #1e2d45; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 }
 
 @layer components {
-  .input-cyber {
-    @apply bg-black bg-opacity-60 border-2 border-matrix text-matrix font-sharetech px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyberaccent transition;
+  /* Inputs */
+  .input-field {
+    @apply w-full bg-bg-elevated border border-border-subtle text-text-primary font-mono text-sm
+           px-3 py-2.5 rounded-md
+           placeholder:text-text-dim
+           focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30
+           transition-colors duration-150;
   }
-  .btn-cyber {
-    @apply bg-black bg-opacity-80 border-2 border-cyberaccent text-cyberaccent hover:bg-cyberaccent hover:text-black shadow-lg transition font-orbitron rounded-lg;
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2
+           bg-accent hover:bg-accent-light
+           text-white font-semibold text-sm
+           px-5 py-2.5 rounded-md
+           transition-colors duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed;
   }
-} 
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2
+           bg-transparent border border-border-subtle hover:border-accent
+           text-text-muted hover:text-accent-light
+           font-medium text-sm
+           px-4 py-2 rounded-md
+           transition-colors duration-150;
+  }
+
+  /* Pill / tag button */
+  .btn-pill {
+    @apply inline-flex items-center gap-1.5
+           bg-bg-elevated border border-border-subtle hover:border-accent/60
+           text-text-muted hover:text-accent-light
+           text-xs font-medium
+           px-3 py-1.5 rounded-full
+           transition-colors duration-150;
+  }
+
+  /* Panel / card */
+  .panel {
+    @apply bg-bg-card border border-border-subtle rounded-lg shadow-card;
+  }
+
+  /* Code / query display */
+  .code-block {
+    @apply bg-bg-secondary border border-border-subtle rounded-md
+           font-mono text-sm text-accent-light
+           px-4 py-3 select-all;
+  }
+
+  /* Section label */
+  .label {
+    @apply text-xs font-semibold uppercase tracking-widest text-text-muted;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-border-subtle;
+  }
+}
+
+/* Animated grid background */
+.bg-grid {
+  background-color: #080c14;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Radial vignette overlay */
+.bg-vignette::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, #080c14 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle top accent line on cards */
+.card-accent-top {
+  position: relative;
+}
+.card-accent-top::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  border-radius: 8px 8px 0 0;
+}
