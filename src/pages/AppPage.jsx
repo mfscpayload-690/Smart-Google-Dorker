@@ -3,16 +3,16 @@ import {
   ShieldCheck, Star, Coffee,
   Terminal, BookOpen, Clock, ScanSearch, Info,
 } from 'lucide-react';
-import GridBackground from './components/GridBackground';
-import DorkForm from './components/DorkForm';
-import DorkTemplates from './components/DorkTemplates';
-import DorkHistory from './components/DorkHistory';
-import ReconAnalyzer from './components/ReconAnalyzer';
-import Footer from './components/Footer';
-import GitHubIcon from './components/GitHubIcon';
-import ToastContainer from './components/ToastContainer';
-import { useHistory } from './hooks/useHistory';
-import { useToast } from './hooks/useToast';
+import GridBackground from '../components/GridBackground';
+import DorkForm from '../components/DorkForm';
+import DorkTemplates from '../components/DorkTemplates';
+import DorkHistory from '../components/DorkHistory';
+import ReconAnalyzer from '../components/ReconAnalyzer';
+import Footer from '../components/Footer';
+import GitHubIcon from '../components/GitHubIcon';
+import ToastContainer from '../components/ToastContainer';
+import { useHistory } from '../hooks/useHistory';
+import { useToast } from '../hooks/useToast';
 
 const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
 const BMC_URL     = 'https://buymeacoffee.com/mfscpayload690';
