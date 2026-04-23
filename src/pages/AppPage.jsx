@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ShieldCheck, Star, Coffee,
   Terminal, BookOpen, Clock, ScanSearch, Info,
@@ -37,6 +38,7 @@ export default function App() {
   const [engine, setEngine]         = useState('google');
   const [loadedDork, setLoadedDork] = useState(null); // signal to DorkForm to load a dork
 
+  const navigate = useNavigate();
   const { history, push: pushHistory, remove: removeHistory, clear: clearHistory } = useHistory();
   const { toasts, toast, dismiss } = useToast();
 
@@ -62,8 +64,14 @@ export default function App() {
       {/* ── Header ── */}
       <header className="relative z-20 border-b border-border-subtle bg-bg-secondary/90 backdrop-blur-sm shrink-0">
         <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
-          <ShieldCheck size={18} className="text-accent shrink-0" />
-          <span className="font-semibold text-text-primary text-sm tracking-wide">Dorkbase</span>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
+            <ShieldCheck size={18} className="text-accent shrink-0" />
+            <span className="font-semibold text-text-primary text-sm tracking-wide">Dorkbase</span>
+          </button>
           <span className="hidden md:block text-xs text-text-dim font-mono ml-1">/ OSINT Recon</span>
 
           <div className="ml-auto flex items-center gap-2">
