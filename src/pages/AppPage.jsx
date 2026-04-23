@@ -27,7 +27,7 @@ const searchEngines = [
 
 const NAV = [
   { id: 'builder',   label: 'Query Builder',   icon: Terminal,    desc: 'Build & run dork queries' },
-  { id: 'templates', label: 'Templates',        icon: BookOpen,    desc: 'Browse 50+ dork templates' },
+  { id: 'templates', label: 'Templates',        icon: BookOpen,    desc: 'Browse 275+ dork templates' },
   { id: 'recon',     label: 'Recon Analyzer',   icon: ScanSearch,  desc: 'Domain recon dork set' },
   { id: 'history',   label: 'History',          icon: Clock,       desc: 'Past queries' },
   { id: 'about',     label: 'About',            icon: Info,        desc: 'How to use this tool' },
@@ -149,7 +149,7 @@ export default function App() {
                 <SectionHeader
                   icon={<BookOpen size={16} className="text-accent" />}
                   title="Dork Templates"
-                  desc="50+ categorized templates. Click Use to load any template into the builder."
+                  desc="275+ categorized templates. Click Use to load any template into the builder."
                 />
                 <div className="panel p-4">
                   <DorkTemplates onUse={handleLoadIntoBuilder} />
