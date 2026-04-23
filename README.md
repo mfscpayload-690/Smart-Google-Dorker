@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![React](https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/mfscpayload690)
 
 An open-source OSINT dork query builder for penetration testers and security researchers. Compose, preview, and launch advanced Google dork queries — with a template library, domain recon analyzer, query history, and shareable links.
 
@@ -75,6 +77,12 @@ For **authorized security research and educational use only**. Do not use agains
 ## Contributing
 
 Issues and pull requests are welcome. For significant changes, open an issue first.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup instructions, branch naming, commit conventions, and the PR process.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ---
 
