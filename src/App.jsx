@@ -109,20 +109,11 @@ export default function App() {
               );
             })}
           </nav>
-
-          {/* Sidebar footer */}
-          <div className="px-3 py-4 border-t border-border-subtle">
-            <a href={BMC_URL} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2 rounded-md border border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 text-yellow-400/80 hover:text-yellow-300 text-xs font-medium transition-colors">
-              <Coffee size={13} />
-              Buy me a coffee
-            </a>
-          </div>
         </aside>
 
         {/* ── Main panel ── */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <main className="flex-1 overflow-y-auto flex flex-col">
+          <div className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8">
 
             {/* Builder */}
             {activeNav === 'builder' && (
