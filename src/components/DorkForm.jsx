@@ -46,6 +46,7 @@ export default function DorkForm() {
   const [showAnalyzer, setShowAnalyzer] = useState(false);
   const [analyzeDomain, setAnalyzeDomain] = useState('');
   const [analyzerDorks, setAnalyzerDorks] = useState([]);
+  const [copiedAnalyzerIdx, setCopiedAnalyzerIdx] = useState(null);
 
   const dork = buildDork(fields);
 
@@ -101,9 +102,11 @@ export default function DorkForm() {
     setAnalyzerDorks(dorks);
   };
 
-  const handleAnalyzerCopy = (dork) => {
+  const handleAnalyzerCopy = (text, idx) => {
     try {
-      navigator.clipboard.writeText(dork);
+      navigator.clipboard.writeText(text);
+      setCopiedAnalyzerIdx(idx);
+      setTimeout(() => setCopiedAnalyzerIdx(null), 1200);
     } catch {}
   };
 
@@ -153,19 +156,19 @@ export default function DorkForm() {
           </form>
           {analyzerDorks.length > 0 && (
             <div className="space-y-2 mt-2">
-              {analyzerDorks.map((dork, idx) => (
+              {analyzerDorks.map((analyzerDork, idx) => (
                 <div key={idx} className="flex items-center gap-2 bg-black bg-opacity-60 border border-cyberaccent rounded px-3 py-2">
-                  <span className="font-sharetech text-matrix text-sm select-all flex-1">{dork}</span>
+                  <span className="font-sharetech text-matrix text-sm select-all flex-1">{analyzerDork}</span>
                   <button
                     type="button"
                     className="btn-cyber px-2 py-1 text-xs font-orbitron"
-                    onClick={() => handleAnalyzerSearch(dork)}
+                    onClick={() => handleAnalyzerSearch(analyzerDork)}
                   >Search</button>
                   <button
                     type="button"
                     className="btn-cyber px-2 py-1 text-xs font-orbitron"
-                    onClick={() => handleAnalyzerCopy(dork)}
-                  >Copy</button>
+                    onClick={() => handleAnalyzerCopy(analyzerDork, idx)}
+                  >{copiedAnalyzerIdx === idx ? 'COPIED!' : 'Copy'}</button>
                 </div>
               ))}
             </div>
