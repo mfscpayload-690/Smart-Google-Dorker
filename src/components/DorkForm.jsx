@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Info, Search, Copy, Check, Globe,
+  Info, Search, Copy, Check, Globe, Link,
   ShieldAlert, ChevronDown, ChevronUp, ScanSearch,
+  BookOpen, Clock,
 } from 'lucide-react';
 import DorkPreview from './DorkPreview';
+import DorkTemplates from './DorkTemplates';
+import DorkHistory from './DorkHistory';
+import { readUrlState, useUrlSync } from '../hooks/useUrlState';
+import { useHistory } from '../hooks/useHistory';
 
-const initialState = { site: '', keyword: '', filetype: '', inurl: '', intitle: '', intext: '' };
+const DEFAULT_FIELDS = { site: '', keyword: '', filetype: '', inurl: '', intitle: '', intext: '' };
 
 const searchEngines = [
   { label: 'Google',     value: 'google',     url: 'https://www.google.com/search?q=' },
@@ -45,6 +50,22 @@ function buildDork({ site, keyword, filetype, inurl, intitle, intext }) {
   return parts.join(' ');
 }
 
+/** Parse a raw dork string back into fields (best-effort) */
+function parseDork(raw) {
+  const fields = { ...DEFAULT_FIELDS };
+  const remaining = [];
+  raw.trim().split(/\s+/).forEach(token => {
+    if (token.startsWith('site:'))     fields.site     = token.slice(5);
+    else if (token.startsWith('filetype:')) fields.filetype = token.slice(9);
+    else if (token.startsWith('inurl:'))   fields.inurl    = token.slice(6);
+    else if (token.startsWith('intitle:')) fields.intitle  = token.slice(8);
+    else if (token.startsWith('intext:'))  fields.intext   = token.slice(7);
+    else remaining.push(token);
+  });
+  fields.keyword = remaining.join(' ');
+  return fields;
+}
+
 function InputField({ name, value, onChange, placeholder, colSpan, tooltip, activeTooltip, onShow, onHide }) {
   return (
     <div className={`relative${colSpan ? ' md:col-span-2' : ''}`}>
@@ -77,26 +98,42 @@ function InputField({ name, value, onChange, placeholder, colSpan, tooltip, acti
 }
 
 export default function DorkForm() {
-  const [fields, setFields]               = useState(initialState);
+  // Boot state from URL params if present
+  const initial = readUrlState({ ...DEFAULT_FIELDS, engine: 'google' });
+
+  const [fields, setFields]               = useState({ site: initial.site, keyword: initial.keyword, filetype: initial.filetype, inurl: initial.inurl, intitle: initial.intitle, intext: initial.intext });
+  const [engine, setEngine]               = useState(initial.engine);
   const [copied, setCopied]               = useState(false);
-  const [engine, setEngine]               = useState('google');
+  const [sharedCopied, setSharedCopied]   = useState(false);
   const [showInfo, setShowInfo]           = useState(false);
   const [showAnalyzer, setShowAnalyzer]   = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [analyzeDomain, setAnalyzeDomain] = useState('');
   const [analyzerDorks, setAnalyzerDorks] = useState([]);
   const [copiedIdx, setCopiedIdx]         = useState(null);
+  const [activeTab, setActiveTab]         = useState(null); // 'templates' | 'history' | null
+
+  const syncUrl  = useUrlSync();
+  const { history, push: pushHistory, remove: removeHistory, clear: clearHistory } = useHistory();
 
   const dork = buildDork(fields);
 
-  const handleChange = e => { setFields({ ...fields, [e.target.name]: e.target.value }); setCopied(false); };
+  // Keep URL in sync whenever fields or engine change
+  useEffect(() => {
+    syncUrl(fields, engine);
+  }, [fields, engine, syncUrl]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleChange = e => {
+    setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setCopied(false);
+  };
+
+  const handleSubmit = useCallback(() => {
     if (!dork) return;
     const sel = searchEngines.find(s => s.value === engine) ?? searchEngines[0];
     window.open(`${sel.url}${encodeURIComponent(dork)}`, '_blank');
-  };
+    pushHistory(dork, fields, engine);
+  }, [dork, engine, fields, pushHistory]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(dork).then(() => {
@@ -104,6 +141,30 @@ export default function DorkForm() {
       setTimeout(() => setCopied(false), 1200);
     }).catch(() => {});
   };
+
+  const handleShareCopy = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setSharedCopied(true);
+      setTimeout(() => setSharedCopied(false), 1800);
+    }).catch(() => {});
+  };
+
+  // Load a template dork into the form fields
+  const handleUseTemplate = useCallback((rawDork) => {
+    setFields(parseDork(rawDork));
+    setCopied(false);
+    setActiveTab(null); // collapse panel after selecting
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Restore a history entry
+  const handleRestoreHistory = useCallback((item) => {
+    setFields(item.fields);
+    setEngine(item.engine);
+    setCopied(false);
+    setActiveTab(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const handleAnalyzerSubmit = e => {
     e.preventDefault();
@@ -132,6 +193,11 @@ export default function DorkForm() {
     { name: 'keyword',  placeholder: 'keyword / free text', colSpan: true },
   ];
 
+  const tabs = [
+    { id: 'templates', label: 'Templates', icon: <BookOpen size={12} />, count: null },
+    { id: 'history',   label: 'History',   icon: <Clock size={12} />,    count: history.length || null },
+  ];
+
   return (
     <div className="space-y-5">
 
@@ -151,14 +217,8 @@ export default function DorkForm() {
                   : 'border-border-subtle bg-bg-elevated text-text-muted hover:border-accent/50 hover:text-text-primary'
                 }`}
             >
-              <input
-                type="radio"
-                name="engine"
-                value={se.value}
-                checked={engine === se.value}
-                onChange={e => setEngine(e.target.value)}
-                className="sr-only"
-              />
+              <input type="radio" name="engine" value={se.value} checked={engine === se.value}
+                onChange={e => setEngine(e.target.value)} className="sr-only" />
               {se.label}
             </label>
           ))}
@@ -192,98 +252,105 @@ export default function DorkForm() {
       <DorkPreview dork={dork} />
 
       {/* Action buttons */}
-      <div className="flex items-center gap-2 pt-1">
+      <div className="flex flex-wrap items-center gap-2 pt-1">
         <button type="button" onClick={handleSubmit} className="btn-primary">
           <Search size={15} />
           Run Query
         </button>
-        <button
-          type="button"
-          onClick={handleCopy}
-          disabled={!dork}
-          className="btn-ghost disabled:opacity-30 disabled:cursor-not-allowed"
-        >
+        <button type="button" onClick={handleCopy} disabled={!dork}
+          className="btn-ghost disabled:opacity-30 disabled:cursor-not-allowed">
           {copied ? <Check size={15} className="text-success" /> : <Copy size={15} />}
           {copied ? 'Copied' : 'Copy'}
+        </button>
+        <button type="button" onClick={handleShareCopy} disabled={!dork}
+          className="btn-ghost disabled:opacity-30 disabled:cursor-not-allowed"
+          title="Copy shareable URL with current query pre-filled">
+          {sharedCopied ? <Check size={15} className="text-success" /> : <Link size={15} />}
+          {sharedCopied ? 'Link Copied!' : 'Share'}
         </button>
       </div>
 
       <div className="divider" />
 
-      {/* Collapsible panels */}
+      {/* Tab bar — Templates / History / Analyzer / Info */}
       <div className="flex flex-wrap gap-2">
-        <button type="button" className="btn-pill" onClick={() => setShowInfo(v => !v)}>
-          <Info size={12} />
-          About Dorking
-          {showInfo ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-        </button>
-        <button type="button" className="btn-pill" onClick={() => setShowAnalyzer(v => !v)}>
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveTab(prev => prev === tab.id ? null : tab.id)}
+            className={`btn-pill ${activeTab === tab.id ? 'border-accent/60 text-accent-light bg-accent/10' : ''}`}
+          >
+            {tab.icon}
+            {tab.label}
+            {tab.count ? (
+              <span className="ml-0.5 bg-accent/20 text-accent-light text-xs px-1.5 py-0.5 rounded-full leading-none">
+                {tab.count}
+              </span>
+            ) : null}
+            {activeTab === tab.id ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+          </button>
+        ))}
+        <button type="button" className={`btn-pill ${showAnalyzer ? 'border-accent/60 text-accent-light bg-accent/10' : ''}`}
+          onClick={() => setShowAnalyzer(v => !v)}>
           <ShieldAlert size={12} />
           Recon Analyzer
           {showAnalyzer ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
         </button>
+        <button type="button" className={`btn-pill ${showInfo ? 'border-accent/60 text-accent-light bg-accent/10' : ''}`}
+          onClick={() => setShowInfo(v => !v)}>
+          <Info size={12} />
+          About
+          {showInfo ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+        </button>
       </div>
 
-      {/* Info panel */}
-      {showInfo && (
-        <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 text-sm text-text-muted leading-relaxed space-y-2">
-          <p>
-            Google dorking uses advanced search operators to surface information that standard queries miss —
-            exposed directories, specific file types, admin interfaces, and misconfigured servers.
+      {/* Templates panel */}
+      {activeTab === 'templates' && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md p-3">
+          <p className="text-xs text-text-muted mb-3">
+            Click <strong className="text-text-primary">Use</strong> on any template to load it into the builder.
+            Templates with <code className="text-accent-light">{'{domain}'}</code> are placeholders — edit the site field after loading.
           </p>
-          <p>
-            Fill in any combination of operator fields. Only non-empty fields are included in the final query.
-            Use <strong className="text-text-primary font-semibold">Run Query</strong> to open results in a new tab,
-            or <strong className="text-text-primary font-semibold">Copy</strong> to grab the raw string.
-          </p>
-          <p className="text-xs text-text-dim border-t border-border-subtle pt-2 mt-2">
-            For authorized security research and educational use only.
-          </p>
+          <DorkTemplates onUse={handleUseTemplate} />
         </div>
       )}
 
-      {/* Security Analyzer panel */}
+      {/* History panel */}
+      {activeTab === 'history' && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md p-3">
+          <DorkHistory
+            history={history}
+            onRestore={handleRestoreHistory}
+            onRemove={removeHistory}
+            onClear={clearHistory}
+          />
+        </div>
+      )}
+
+      {/* Recon Analyzer panel */}
       {showAnalyzer && (
         <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 space-y-3">
-          <p className="text-xs text-text-muted">
-            Generate a standard recon dork set for a target domain.
-          </p>
+          <p className="text-xs text-text-muted">Generate a standard recon dork set for a target domain.</p>
           <form onSubmit={handleAnalyzerSubmit} className="flex gap-2">
-            <input
-              type="text"
-              value={analyzeDomain}
-              onChange={e => setAnalyzeDomain(e.target.value)}
-              placeholder="target domain (e.g., example.com)"
-              className="input-field flex-1"
-              autoComplete="off"
-              spellCheck={false}
-            />
+            <input type="text" value={analyzeDomain} onChange={e => setAnalyzeDomain(e.target.value)}
+              placeholder="target domain (e.g., example.com)" className="input-field flex-1"
+              autoComplete="off" spellCheck={false} />
             <button type="submit" className="btn-primary shrink-0">
-              <ScanSearch size={14} />
-              Analyze
+              <ScanSearch size={14} /> Analyze
             </button>
           </form>
-
           {analyzerDorks.length > 0 && (
             <div className="space-y-1.5 pt-1">
               {analyzerDorks.map((q, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 bg-bg-secondary border border-border-subtle rounded px-3 py-2"
-                >
+                <div key={idx} className="flex items-center gap-2 bg-bg-secondary border border-border-subtle rounded px-3 py-2">
                   <span className="font-mono text-xs text-accent-light select-all flex-1 truncate">{q}</span>
-                  <button
-                    type="button"
-                    className="btn-ghost py-1 px-2 text-xs shrink-0"
-                    onClick={() => handleAnalyzerSearch(q)}
-                  >
+                  <button type="button" className="btn-ghost py-1 px-2 text-xs shrink-0"
+                    onClick={() => handleAnalyzerSearch(q)}>
                     <Search size={11} /> Search
                   </button>
-                  <button
-                    type="button"
-                    className="btn-ghost py-1 px-2 text-xs shrink-0"
-                    onClick={() => handleAnalyzerCopy(q, idx)}
-                  >
+                  <button type="button" className="btn-ghost py-1 px-2 text-xs shrink-0"
+                    onClick={() => handleAnalyzerCopy(q, idx)}>
                     {copiedIdx === idx ? <Check size={11} className="text-success" /> : <Copy size={11} />}
                     {copiedIdx === idx ? 'Copied' : 'Copy'}
                   </button>
@@ -291,6 +358,20 @@ export default function DorkForm() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Info panel */}
+      {showInfo && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 text-sm text-text-muted leading-relaxed space-y-2">
+          <p>Google dorking uses advanced search operators to surface information that standard queries miss —
+            exposed directories, specific file types, admin interfaces, and misconfigured servers.</p>
+          <p>Fill in any combination of operator fields. Only non-empty fields are included in the final query.
+            Use <strong className="text-text-primary font-semibold">Run Query</strong> to open results in a new tab,
+            or <strong className="text-text-primary font-semibold">Share</strong> to copy a URL with the current query pre-filled.</p>
+          <p className="text-xs text-text-dim border-t border-border-subtle pt-2 mt-2">
+            For authorized security research and educational use only.
+          </p>
         </div>
       )}
     </div>
