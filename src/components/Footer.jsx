@@ -1,5 +1,6 @@
 import React from 'react';
-import { GitBranch, GitFork, Bug, MessageSquare, Star, ExternalLink, ShieldCheck } from 'lucide-react';
+import { GitFork, Bug, MessageSquare, Star, ExternalLink, ShieldCheck } from 'lucide-react';
+import GitHubIcon from './GitHubIcon';
 
 const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
 const GITHUB_USER = 'https://github.com/mfscpayload-690';
@@ -55,7 +56,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 mt-3 text-xs text-text-muted hover:text-accent-light transition-colors group"
             >
-              <GitBranch size={13} />
+              <GitHubIcon size={13} />
               <span>mfscpayload-690</span>
               <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity" />
             </a>
