@@ -1,18 +1,19 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ShieldCheck, Star, Coffee,
   Terminal, BookOpen, Clock, ScanSearch, Info,
 } from 'lucide-react';
-import GridBackground from './components/GridBackground';
-import DorkForm from './components/DorkForm';
-import DorkTemplates from './components/DorkTemplates';
-import DorkHistory from './components/DorkHistory';
-import ReconAnalyzer from './components/ReconAnalyzer';
-import Footer from './components/Footer';
-import GitHubIcon from './components/GitHubIcon';
-import ToastContainer from './components/ToastContainer';
-import { useHistory } from './hooks/useHistory';
-import { useToast } from './hooks/useToast';
+import GridBackground from '../components/GridBackground';
+import DorkForm from '../components/DorkForm';
+import DorkTemplates from '../components/DorkTemplates';
+import DorkHistory from '../components/DorkHistory';
+import ReconAnalyzer from '../components/ReconAnalyzer';
+import Footer from '../components/Footer';
+import GitHubIcon from '../components/GitHubIcon';
+import ToastContainer from '../components/ToastContainer';
+import { useHistory } from '../hooks/useHistory';
+import { useToast } from '../hooks/useToast';
 
 const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
 const BMC_URL     = 'https://buymeacoffee.com/mfscpayload690';
@@ -37,6 +38,7 @@ export default function App() {
   const [engine, setEngine]         = useState('google');
   const [loadedDork, setLoadedDork] = useState(null); // signal to DorkForm to load a dork
 
+  const navigate = useNavigate();
   const { history, push: pushHistory, remove: removeHistory, clear: clearHistory } = useHistory();
   const { toasts, toast, dismiss } = useToast();
 
@@ -62,14 +64,21 @@ export default function App() {
       {/* ── Header ── */}
       <header className="relative z-20 border-b border-border-subtle bg-bg-secondary/90 backdrop-blur-sm shrink-0">
         <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
-          <ShieldCheck size={18} className="text-accent shrink-0" />
-          <span className="font-semibold text-text-primary text-sm tracking-wide">Dorkbase</span>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
+            <ShieldCheck size={18} className="text-accent shrink-0" />
+            <span className="font-semibold text-text-primary text-sm tracking-wide">Dorkbase</span>
+          </button>
           <span className="hidden md:block text-xs text-text-dim font-mono ml-1">/ OSINT Recon</span>
 
           <div className="ml-auto flex items-center gap-2">
             <a href={BMC_URL} target="_blank" rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
-              <Coffee size={13} /> Support
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
+              <Coffee size={13} />
+              <span className="hidden sm:inline">Support</span>
             </a>
             <a href={GITHUB_REPO} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border-subtle bg-bg-elevated hover:border-warn/60 hover:bg-warn/5 text-text-muted hover:text-warn transition-colors text-xs font-medium group">
@@ -109,21 +118,11 @@ export default function App() {
               );
             })}
           </nav>
-
-          {/* Sidebar footer */}
-          <div className="px-3 py-4 border-t border-border-subtle">
-            <a href={BMC_URL} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2 rounded-md border border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 text-yellow-400/80 hover:text-yellow-300 text-xs font-medium transition-colors">
-              <Coffee size={13} />
-              Buy me a coffee
-            </a>
-          </div>
         </aside>
 
         {/* ── Main panel ── */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-
+        <main className="flex-1 overflow-y-auto flex flex-col">
+          <div className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8">
             {/* Builder */}
             {activeNav === 'builder' && (
               <section>
@@ -209,7 +208,7 @@ export default function App() {
 
           </div>
 
-          <Footer />
+          {activeNav === 'about' && <Footer />}
         </main>
       </div>
 
