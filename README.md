@@ -2,8 +2,6 @@
 
 An open-source OSINT dork query builder for security researchers and penetration testers. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
 
-**Live demo:** [mfscpayload-690.github.io/Smart-Google-Dorker](https://mfscpayload-690.github.io/Smart-Google-Dorker/)
-
 ---
 
 ## Features
@@ -32,8 +30,7 @@ An open-source OSINT dork query builder for security researchers and penetration
 **Prerequisites:** Node.js 18+ and npm
 
 ```sh
-git clone https://github.com/mfscpayload-690/Smart-Google-Dorker.git
-cd Smart-Google-Dorker
+git clone https://github.com/mfscpayload-690/dorkbase.git
 npm install
 npm run dev
 ```
