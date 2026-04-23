@@ -100,6 +100,12 @@ export default function DorkForm({ engine, onEngineChange, loadedDork, onRunQuer
   // Sync URL
   useEffect(() => { syncUrl(fields, engine); }, [fields, engine, syncUrl]);
 
+  // Dynamic page title for shared URLs
+  useEffect(() => {
+    document.title = dork ? `Dorkbase — ${dork}` : 'Dorkbase';
+    return () => { document.title = 'Dorkbase'; };
+  }, [dork]);
+
   const handleChange = e => setFields(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleClear = () => setFields(DEFAULT_FIELDS);

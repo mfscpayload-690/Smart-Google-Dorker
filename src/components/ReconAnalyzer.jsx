@@ -34,9 +34,19 @@ function RiskBadge({ risk }) {
   );
 }
 
+const DOMAIN_RE = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+function validateDomain(value) {
+  const trimmed = value.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+  if (!trimmed) return { valid: false, error: 'Enter a domain name.' };
+  if (!DOMAIN_RE.test(trimmed)) return { valid: false, error: 'Enter a valid domain (e.g., example.com).' };
+  return { valid: true, domain: trimmed };
+}
+
 export default function ReconAnalyzer({ onLoadIntoBuilder, engine, engineUrl }) {
-  const [domain, setDomain]           = useState('');
-  const [submitted, setSubmitted]     = useState('');
+  const [domain, setDomain]         = useState('');
+  const [domainError, setDomainError] = useState('');
+  const [submitted, setSubmitted]   = useState('');
   const [openCats, setOpenCats]       = useState({});
   const [copiedIdx, setCopiedIdx]     = useState(null);
   const [filterRisk, setFilterRisk]   = useState('all');
@@ -64,8 +74,11 @@ export default function ReconAnalyzer({ onLoadIntoBuilder, engine, engineUrl }) 
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!domain.trim()) return;
-    setSubmitted(domain.trim());
+    const { valid, domain: cleanDomain, error } = validateDomain(domain);
+    if (!valid) { setDomainError(error); return; }
+    setDomainError('');
+    setSubmitted(cleanDomain);
+    setDomain(cleanDomain);
     // open all categories by default
     const open = {};
     RECON_CATEGORIES.forEach(c => { open[c.id] = true; });
@@ -131,16 +144,19 @@ export default function ReconAnalyzer({ onLoadIntoBuilder, engine, engineUrl }) 
           Enter a target domain to generate a full recon dork set, categorized by attack surface with risk ratings.
         </p>
         <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
-            type="text"
-            value={domain}
-            onChange={e => setDomain(e.target.value)}
-            placeholder="target domain (e.g., example.com)"
-            className="input-field flex-1"
-            autoComplete="off"
-            spellCheck={false}
-          />
-          <button type="submit" className="btn-primary shrink-0">
+          <div className="flex-1 space-y-1">
+            <input
+              type="text"
+              value={domain}
+              onChange={e => { setDomain(e.target.value); setDomainError(''); }}
+              placeholder="target domain (e.g., example.com)"
+              className={`input-field w-full${domainError ? ' border-danger focus:border-danger focus:ring-danger/30' : ''}`}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {domainError && <p className="text-xs text-danger">{domainError}</p>}
+          </div>
+          <button type="submit" className="btn-primary shrink-0 self-start">
             <ScanSearch size={14} />
             Analyze
           </button>
@@ -255,8 +271,8 @@ export default function ReconAnalyzer({ onLoadIntoBuilder, engine, engineUrl }) 
                                   {t.query}
                                 </p>
                               </div>
-                              {/* Row actions */}
-                              <div className="flex items-center gap-1 shrink-0 pt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                              {/* Row actions — always visible */}
+                              <div className="flex items-center gap-1 shrink-0 pt-0.5">
                                 <button type="button"
                                   onClick={() => handleSearch(t.query)}
                                   className="p-1.5 rounded text-text-muted hover:text-accent-light hover:bg-accent/10 transition-colors"
