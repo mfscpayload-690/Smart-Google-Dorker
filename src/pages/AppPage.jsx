@@ -115,7 +115,6 @@ export default function App() {
         {/* ── Main panel ── */}
         <main className="flex-1 overflow-y-auto flex flex-col">
           <div className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8">
-
             {/* Builder */}
             {activeNav === 'builder' && (
               <section>
@@ -201,7 +200,7 @@ export default function App() {
 
           </div>
 
-          <Footer />
+          {activeNav === 'about' && <Footer />}
         </main>
       </div>
 
