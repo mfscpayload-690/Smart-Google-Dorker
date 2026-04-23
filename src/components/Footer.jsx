@@ -16,7 +16,7 @@ const links = [
 export default function Footer() {
   return (
     <footer className="relative z-10 border-t border-border-subtle bg-bg-secondary/60 backdrop-blur-sm mt-auto">
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-6 pt-8 pb-24 md:pb-8">
 
         {/* Top row */}
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-8">
