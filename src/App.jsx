@@ -1,6 +1,7 @@
 import { ShieldCheck, Terminal } from 'lucide-react';
 import GridBackground from './components/GridBackground';
 import DorkForm from './components/DorkForm';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -38,13 +39,10 @@ export default function App() {
           <div className="panel card-accent-top p-6">
             <DorkForm />
           </div>
-
-          {/* Footer note */}
-          <p className="mt-6 text-center text-xs text-text-dim">
-            For authorized security research and educational use only.
-          </p>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
