@@ -63,7 +63,7 @@ export default function App() {
       <header className="relative z-20 border-b border-border-subtle bg-bg-secondary/90 backdrop-blur-sm shrink-0">
         <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
           <ShieldCheck size={18} className="text-accent shrink-0" />
-          <span className="font-semibold text-text-primary text-sm tracking-wide">Smart Google Dorker</span>
+          <span className="font-semibold text-text-primary text-sm tracking-wide">Dorkbase</span>
           <span className="hidden md:block text-xs text-text-dim font-mono ml-1">/ OSINT Recon</span>
 
           <div className="ml-auto flex items-center gap-2">
@@ -201,7 +201,7 @@ export default function App() {
                 <SectionHeader
                   icon={<Info size={16} className="text-accent" />}
                   title="About"
-                  desc="How to use Smart Google Dorker."
+                  desc="How to use Dorkbase."
                 />
                 <AboutPanel />
               </section>
