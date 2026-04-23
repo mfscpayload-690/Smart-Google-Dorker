@@ -5,17 +5,28 @@
 [![React](https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
 
-An open-source OSINT dork query builder for security researchers and penetration testers. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
+An open-source OSINT dork query builder for penetration testers and security researchers. Compose, preview, and launch advanced Google dork queries — with a template library, domain recon analyzer, query history, and shareable links.
+
+**Live:** [dorkbase.netlify.app](https://dorkbase.netlify.app)
 
 ---
 
 ## Features
 
-- **Live query builder** — compose dork queries using `site:`, `filetype:`, `inurl:`, `intitle:`, `intext:`, and free-text fields with real-time preview
-- **Multi-engine support** — launch queries directly on Google, DuckDuckGo, Startpage, or Shodan
-- **Security Analyzer** — generate a set of common reconnaissance dorks for a target domain in one click
-- **Copy to clipboard** — grab any query without leaving the page
-- **Responsive layout** — works on desktop and mobile
+**Query Builder**
+Compose dork queries field by field — `site:`, `filetype:`, `inurl:`, `intitle:`, `intext:`, and free-text — with a live preview. Every query state is encoded in the URL so you can share a pre-filled link with a teammate.
+
+**Template Library**
+50+ pre-built dorks across 7 attack surface categories: Exposed Files, Login Panels, Exposed Directories, Credentials & Secrets, Network/IoT, Cloud Storage, and Vulnerability Indicators. Searchable and filterable.
+
+**Recon Analyzer**
+Enter a target domain and generate a full recon dork set in one click — categorized by attack surface with Critical / High / Medium risk ratings. Export as `.txt`, copy all, or run all in tabs.
+
+**Query History**
+Every query you run is saved to localStorage (last 50, deduplicated). Restore any past query into the builder with one click.
+
+**Multi-engine support**
+Launch queries on Google, DuckDuckGo, Startpage, or Shodan.
 
 ---
 
@@ -24,8 +35,10 @@ An open-source OSINT dork query builder for security researchers and penetration
 | Tool | Purpose |
 |---|---|
 | React 18 | UI framework |
+| React Router | Client-side routing (`/` landing, `/app` tool) |
 | Vite | Build tool and dev server |
 | Tailwind CSS | Styling |
+| lucide-react | Icons |
 | Netlify | Deployment |
 
 ---
@@ -36,41 +49,32 @@ An open-source OSINT dork query builder for security researchers and penetration
 
 ```sh
 git clone https://github.com/mfscpayload-690/dorkbase.git
+cd dorkbase
 npm install
 npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Available Scripts
+### Scripts
 
 ```sh
-npm run dev       # Start development server
-npm run build     # Build for production (outputs to /dist)
-npm run preview   # Preview the production build locally
+npm run dev       # Development server
+npm run build     # Production build → /dist
+npm run preview   # Preview production build locally
 ```
-
----
-
-## Usage
-
-1. Fill in one or more fields — only non-empty fields are included in the query.
-2. Select a target search engine from the radio options.
-3. Click **DORK** to open the search in a new tab, or **COPY** to copy the raw query string.
-
-For domain-wide reconnaissance, use the **Security Analyzer** — enter a domain and it generates a set of pre-built dorks covering common exposure patterns (admin panels, exposed files, backup directories, etc.).
 
 ---
 
 ## Disclaimer
 
-This tool is intended for **educational purposes and authorized security research only**. Google dorking can surface sensitive or unintentionally exposed information. Do not use this tool against systems you do not own or have explicit permission to test. The author assumes no liability for misuse.
+For **authorized security research and educational use only**. Do not use against systems you do not own or have explicit permission to test. The author assumes no liability for misuse.
 
 ---
 
 ## Contributing
 
-Issues and pull requests are welcome. For significant changes, open an issue first to discuss what you'd like to change.
+Issues and pull requests are welcome. For significant changes, open an issue first.
 
 ---
 
