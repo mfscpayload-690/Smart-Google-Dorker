@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Info, Search, Copy, Check, Globe, Link,
-  ShieldAlert, ChevronDown, ChevronUp, ScanSearch,
+  ShieldAlert, ChevronDown, ChevronUp,
   BookOpen, Clock,
 } from 'lucide-react';
 import DorkPreview from './DorkPreview';
 import DorkTemplates from './DorkTemplates';
 import DorkHistory from './DorkHistory';
+import ReconAnalyzer from './ReconAnalyzer';
 import { readUrlState, useUrlSync } from '../hooks/useUrlState';
 import { useHistory } from '../hooks/useHistory';
 
@@ -108,10 +109,8 @@ export default function DorkForm() {
   const [showInfo, setShowInfo]           = useState(false);
   const [showAnalyzer, setShowAnalyzer]   = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
-  const [analyzeDomain, setAnalyzeDomain] = useState('');
-  const [analyzerDorks, setAnalyzerDorks] = useState([]);
   const [copiedIdx, setCopiedIdx]         = useState(null);
-  const [activeTab, setActiveTab]         = useState(null); // 'templates' | 'history' | null
+  const [activeTab, setActiveTab]         = useState(null); // 'templates' | 'history' | 'recon' | null
 
   const syncUrl  = useUrlSync();
   const { history, push: pushHistory, remove: removeHistory, clear: clearHistory } = useHistory();
@@ -166,12 +165,6 @@ export default function DorkForm() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const handleAnalyzerSubmit = e => {
-    e.preventDefault();
-    if (!analyzeDomain.trim()) return;
-    setAnalyzerDorks(analyzerTemplates.map(t => t.replace('{domain}', analyzeDomain.trim())));
-  };
-
   const handleAnalyzerCopy = (text, idx) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopiedIdx(idx);
@@ -194,8 +187,9 @@ export default function DorkForm() {
   ];
 
   const tabs = [
-    { id: 'templates', label: 'Templates', icon: <BookOpen size={12} />, count: null },
-    { id: 'history',   label: 'History',   icon: <Clock size={12} />,    count: history.length || null },
+    { id: 'templates', label: 'Templates',       icon: <BookOpen size={12} />,  count: null },
+    { id: 'history',   label: 'History',         icon: <Clock size={12} />,     count: history.length || null },
+    { id: 'recon',     label: 'Recon Analyzer',  icon: <ShieldAlert size={12} />, count: null },
   ];
 
   return (
@@ -272,7 +266,7 @@ export default function DorkForm() {
 
       <div className="divider" />
 
-      {/* Tab bar — Templates / History / Analyzer / Info */}
+      {/* Tab bar */}
       <div className="flex flex-wrap gap-2">
         {tabs.map(tab => (
           <button
@@ -291,12 +285,6 @@ export default function DorkForm() {
             {activeTab === tab.id ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
           </button>
         ))}
-        <button type="button" className={`btn-pill ${showAnalyzer ? 'border-accent/60 text-accent-light bg-accent/10' : ''}`}
-          onClick={() => setShowAnalyzer(v => !v)}>
-          <ShieldAlert size={12} />
-          Recon Analyzer
-          {showAnalyzer ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-        </button>
         <button type="button" className={`btn-pill ${showInfo ? 'border-accent/60 text-accent-light bg-accent/10' : ''}`}
           onClick={() => setShowInfo(v => !v)}>
           <Info size={12} />
@@ -329,35 +317,13 @@ export default function DorkForm() {
       )}
 
       {/* Recon Analyzer panel */}
-      {showAnalyzer && (
-        <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 space-y-3">
-          <p className="text-xs text-text-muted">Generate a standard recon dork set for a target domain.</p>
-          <form onSubmit={handleAnalyzerSubmit} className="flex gap-2">
-            <input type="text" value={analyzeDomain} onChange={e => setAnalyzeDomain(e.target.value)}
-              placeholder="target domain (e.g., example.com)" className="input-field flex-1"
-              autoComplete="off" spellCheck={false} />
-            <button type="submit" className="btn-primary shrink-0">
-              <ScanSearch size={14} /> Analyze
-            </button>
-          </form>
-          {analyzerDorks.length > 0 && (
-            <div className="space-y-1.5 pt-1">
-              {analyzerDorks.map((q, idx) => (
-                <div key={idx} className="flex items-center gap-2 bg-bg-secondary border border-border-subtle rounded px-3 py-2">
-                  <span className="font-mono text-xs text-accent-light select-all flex-1 truncate">{q}</span>
-                  <button type="button" className="btn-ghost py-1 px-2 text-xs shrink-0"
-                    onClick={() => handleAnalyzerSearch(q)}>
-                    <Search size={11} /> Search
-                  </button>
-                  <button type="button" className="btn-ghost py-1 px-2 text-xs shrink-0"
-                    onClick={() => handleAnalyzerCopy(q, idx)}>
-                    {copiedIdx === idx ? <Check size={11} className="text-success" /> : <Copy size={11} />}
-                    {copiedIdx === idx ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+      {activeTab === 'recon' && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md p-4">
+          <ReconAnalyzer
+            onLoadIntoBuilder={q => { handleUseTemplate(q); setActiveTab(null); }}
+            engine={engine}
+            engineUrl={(searchEngines.find(s => s.value === engine) ?? searchEngines[0]).url}
+          />
         </div>
       )}
 
