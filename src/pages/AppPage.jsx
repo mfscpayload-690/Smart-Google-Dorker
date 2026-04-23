@@ -68,8 +68,9 @@ export default function App() {
 
           <div className="ml-auto flex items-center gap-2">
             <a href={BMC_URL} target="_blank" rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
-              <Coffee size={13} /> Support
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
+              <Coffee size={13} />
+              <span className="hidden sm:inline">Support</span>
             </a>
             <a href={GITHUB_REPO} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border-subtle bg-bg-elevated hover:border-warn/60 hover:bg-warn/5 text-text-muted hover:text-warn transition-colors text-xs font-medium group">

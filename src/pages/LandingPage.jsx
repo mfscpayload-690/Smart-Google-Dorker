@@ -178,8 +178,9 @@ export default function LandingPage() {
           <span className="hidden md:block text-xs text-text-dim font-mono ml-1">/ OSINT Recon</span>
           <div className="ml-auto flex items-center gap-2">
             <a href={BMC_URL} target="_blank" rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
-              <Coffee size={13} /> Support
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium">
+              <Coffee size={13} />
+              <span className="hidden sm:inline">Support</span>
             </a>
             <a href={GITHUB_REPO} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border-subtle bg-bg-elevated hover:border-warn/60 hover:bg-warn/5 text-text-muted hover:text-warn transition-colors text-xs font-medium group">
@@ -287,12 +288,8 @@ export default function LandingPage() {
               {STEPS.map((step, i) => {
                 const Icon = step.icon;
                 return (
-                  <div key={step.n} className="relative flex flex-col items-start">
-                    {/* Connector line */}
-                    {i < STEPS.length - 1 && (
-                      <div className="hidden md:block absolute top-5 left-[calc(100%+0px)] w-full h-px bg-border-subtle -translate-y-1/2 z-0" />
-                    )}
-                    <div className="flex items-center gap-3 mb-3 relative z-10">
+                  <div key={step.n} className="flex flex-col items-start">
+                    <div className="flex items-center gap-3 mb-3">
                       <span className="text-xs font-mono text-text-dim">{step.n}</span>
                       <div className="p-2 rounded-md bg-accent/10 border border-accent/20">
                         <Icon size={15} className="text-accent-light" />
