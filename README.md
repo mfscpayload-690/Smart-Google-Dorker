@@ -1,79 +1,80 @@
-# Smart-Google-Dorker
+# Smart Google Dorker
 
-> **Welcome to the Matrix, Operator.**
+A web-based Google dork query builder for security researchers and OSINT practitioners. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
 
-Smart-Google-Dorker is a modern, cyberpunk-inspired web app for crafting, previewing, and launching advanced Google dork queries. Whether you're a penetration tester, OSINT enthusiast, or just a curious mind, this tool is your digital lockpick for the world's largest search engine.
+![Smart Google Dorker](https://github.com/user-attachments/assets/5ab0a188-051b-41a2-80a8-2facd18faf92)
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5ab0a188-051b-41a2-80a8-2facd18faf92" />
-
-
----
-
-## 🚀 Features
-- **Cyberpunk/Matrix UI:** Futuristic, neon-drenched interface for the true cybersec aficionado.
-- **Live Dork Builder:** Instantly preview your Google dork as you type.
-- **One-Click Copy & Search:** Copy your query or launch it in Google with a single click.
-- **Responsive:** Looks sharp on desktops, tablets, and mobile.
-- **Built for Speed:** Powered by React, Vite, and Tailwind CSS.
+**Live demo:** [mfscpayload-690.github.io/Smart-Google-Dorker](https://mfscpayload-690.github.io/Smart-Google-Dorker/)
 
 ---
 
-## 🛠️ Tech Stack
-- **React 18**
-- **Vite** (blazing-fast dev/build)
-- **Tailwind CSS** (utility-first styling)
-- **PostCSS**
+## Features
+
+- **Live query builder** — compose dork queries using `site:`, `filetype:`, `inurl:`, `intitle:`, `intext:`, and free-text fields with real-time preview
+- **Multi-engine support** — launch queries directly on Google, DuckDuckGo, Startpage, or Shodan
+- **Security Analyzer** — generate a set of common reconnaissance dorks for a target domain in one click
+- **Copy to clipboard** — grab any query without leaving the page
+- **Responsive layout** — works on desktop and mobile
 
 ---
 
-## ⚡ Getting Started
+## Tech Stack
 
-### 1. Clone the Repo
+| Tool | Purpose |
+|---|---|
+| React 18 | UI framework |
+| Vite | Build tool and dev server |
+| Tailwind CSS | Styling |
+| gh-pages | GitHub Pages deployment |
+
+---
+
+## Getting Started
+
+**Prerequisites:** Node.js 18+ and npm
+
 ```sh
 git clone https://github.com/mfscpayload-690/Smart-Google-Dorker.git
 cd Smart-Google-Dorker
-```
-
-### 2. Install Dependencies
-```sh
 npm install
-```
-
-### 3. Run Locally
-```sh
 npm run dev
 ```
-Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 4. Build for Production
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Available Scripts
+
 ```sh
-npm run build
+npm run dev       # Start development server
+npm run build     # Build for production (outputs to /dist)
+npm run preview   # Preview the production build locally
+npm run deploy    # Deploy to GitHub Pages
 ```
 
-### 5. Deploy to GitHub Pages
-```sh
-npm run deploy
-```
-Your app will be live at: [https://mfscpayload-690.github.io/Smart-Google-Dorker/](https://mfscpayload-690.github.io/Smart-Google-Dorker/)
+---
+
+## Usage
+
+1. Fill in one or more fields — only non-empty fields are included in the query.
+2. Select a target search engine from the radio options.
+3. Click **DORK** to open the search in a new tab, or **COPY** to copy the raw query string.
+
+For domain-wide reconnaissance, use the **Security Analyzer** — enter a domain and it generates a set of pre-built dorks covering common exposure patterns (admin panels, exposed files, backup directories, etc.).
 
 ---
 
-## 🕵️‍♂️ Usage
-- Fill in the fields (site, filetype, inurl, intitle, intext, keyword) to craft your dork.
-- Preview updates in real time.
-- Hit **DORK** to launch the search in Google, or **COPY** to grab the query for your toolkit.
+## Disclaimer
+
+This tool is intended for **educational purposes and authorized security research only**. Google dorking can surface sensitive or unintentionally exposed information. Do not use this tool against systems you do not own or have explicit permission to test. The author assumes no liability for misuse.
 
 ---
 
-## ⚠️ Legal & Ethical Disclaimer
-This tool is for **educational and authorized security research** only. Google dorking can reveal sensitive information—**never use it for unauthorized access or malicious purposes**. Always have permission before testing or probing any system. The author is not responsible for misuse.
+## Contributing
+
+Issues and pull requests are welcome. For significant changes, open an issue first to discuss what you'd like to change.
 
 ---
 
-## 🧑‍💻 About
-Built with love by a fellow cybersec nerd. Contributions, issues, and PRs are welcome—open a ticket or fork away!
+## License
 
----
-
-## 📜 License
 [MIT](./LICENSE)
