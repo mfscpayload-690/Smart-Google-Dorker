@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Ask a Question / Start a Discussion
+    url: https://github.com/mfscpayload-690/dorkbase/discussions
+    about: For questions, ideas, and general discussion — use Discussions instead of Issues.
