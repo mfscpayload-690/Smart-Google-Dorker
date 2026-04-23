@@ -2,8 +2,6 @@
 
 A web-based Google dork query builder for security researchers and OSINT practitioners. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
 
-![Smart Google Dorker](https://github.com/user-attachments/assets/5ab0a188-051b-41a2-80a8-2facd18faf92)
-
 **Live demo:** [mfscpayload-690.github.io/Smart-Google-Dorker](https://mfscpayload-690.github.io/Smart-Google-Dorker/)
 
 ---
