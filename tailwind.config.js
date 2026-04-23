@@ -42,4 +42,5 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: ['fill-warn'],
 }

@@ -1,7 +1,9 @@
-import { ShieldCheck, Terminal } from 'lucide-react';
+import { ShieldCheck, Terminal, Star } from 'lucide-react';
 import GridBackground from './components/GridBackground';
 import DorkForm from './components/DorkForm';
 import Footer from './components/Footer';
+
+const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
 
 export default function App() {
   return (
@@ -13,7 +15,19 @@ export default function App() {
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-3">
           <ShieldCheck size={20} className="text-accent" />
           <span className="font-semibold text-text-primary text-sm tracking-wide">Smart Google Dorker</span>
-          <span className="ml-auto text-xs text-text-muted font-mono">OSINT / Recon</span>
+
+          <div className="ml-auto flex items-center gap-3">
+            <a
+              href={GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border-subtle bg-bg-elevated hover:border-warn/60 hover:bg-warn/5 text-text-muted hover:text-warn transition-colors text-xs font-medium group"
+            >
+              <Star size={13} className="group-hover:fill-warn group-hover:text-warn transition-all" />
+              Star on GitHub
+            </a>
+            <span className="text-xs text-text-muted font-mono hidden sm:block">OSINT / Recon</span>
+          </div>
         </div>
       </header>
 
