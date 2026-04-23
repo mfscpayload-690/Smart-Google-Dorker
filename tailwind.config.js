@@ -9,8 +9,8 @@ module.exports = {
         // Base
         'bg-primary':   '#080c14',
         'bg-secondary': '#0d1117',
-        'bg-card':      '#0f1623',
-        'bg-elevated':  '#151d2e',
+        'bg-card':      '#111827',   // was #0f1623 — slightly lighter card
+        'bg-elevated':  '#1a2540',   // was #151d2e — more contrast on inputs
         // Accent — electric blue
         'accent':       '#3b82f6',
         'accent-light': '#60a5fa',
@@ -18,16 +18,12 @@ module.exports = {
         // Cyan secondary
         'sec':          '#06b6d4',
         'sec-dim':      '#0e7490',
-        // Text
-        'text-primary': '#e2e8f0',
-        'text-muted':   '#64748b',
-        'text-dim':     '#334155',
-        // Status
-        'danger':       '#ef4444',
-        'warn':         '#f59e0b',
-        'success':      '#10b981',
-        // Border
-        'border-subtle':'#1e2d45',
+        // Text — significantly brighter hierarchy
+        'text-primary': '#f1f5f9',   // was #e2e8f0 — near white
+        'text-muted':   '#94a3b8',   // was #64748b — much more readable
+        'text-dim':     '#475569',   // was #334155 — visible instead of invisible
+        // Border — more visible
+        'border-subtle':'#1e3a5f',   // was #1e2d45 — bluer, more contrast
         'border-active':'#3b82f6',
       },
       fontFamily: {

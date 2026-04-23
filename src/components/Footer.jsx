@@ -115,18 +115,18 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="divider pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="text-xs text-text-dim">
+          <p className="text-xs text-text-muted">
             © {new Date().getFullYear()} Aravind Lal. Released under the{' '}
             <a
               href={`${GITHUB_REPO}/blob/main/LICENSE`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-text-muted transition-colors underline underline-offset-2"
+              className="hover:text-accent-light transition-colors underline underline-offset-2"
             >
               MIT License
             </a>.
           </p>
-          <p className="text-xs text-text-dim">
+          <p className="text-xs text-text-muted">
             For authorized security research and educational use only.
           </p>
         </div>

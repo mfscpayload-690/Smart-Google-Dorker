@@ -233,8 +233,8 @@ export default function DorkForm() {
           </p>
           <p>
             Fill in any combination of operator fields. Only non-empty fields are included in the final query.
-            Use <strong className="text-text-primary">Run Query</strong> to open results in a new tab,
-            or <strong className="text-text-primary">Copy</strong> to grab the raw string.
+            Use <strong className="text-text-primary font-semibold">Run Query</strong> to open results in a new tab,
+            or <strong className="text-text-primary font-semibold">Copy</strong> to grab the raw string.
           </p>
           <p className="text-xs text-text-dim border-t border-border-subtle pt-2 mt-2">
             For authorized security research and educational use only.
