@@ -125,7 +125,7 @@ export default function App() {
 
         {/* ── Main panel ── */}
         <main className="flex-1 overflow-y-auto flex flex-col">
-          <div className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8">
+          <div className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 pb-24 md:pb-8">
             {/* Builder */}
             {activeNav === 'builder' && (
               <section>
@@ -217,7 +217,7 @@ export default function App() {
 
       {/* ── Mobile bottom tab bar ── */}
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 border-t border-border-subtle bg-bg-secondary/95 backdrop-blur-sm flex">
-        {NAV.filter(n => n.id !== 'about').map(item => {
+        {NAV.map(item => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
           const badge = item.id === 'history' && history.length > 0 ? history.length : null;
