@@ -29,7 +29,7 @@ Major rebuild. New landing page, full app shell redesign, and brand rename.
 - Two-panel app shell with persistent sidebar navigation (desktop)
 - Mobile bottom tab bar (Builder / Templates / Recon / History)
 - Toast notification system (slide-in, bottom-right)
-- Dork Templates library — 50+ templates across 7 attack surface categories, searchable
+- Dork Templates library — 275+ templates across 10 attack surface categories, searchable
 - Query History — localStorage, max 50 entries, deduplicated, restore/remove
 - Share via URL — form state encoded in URL query params, shareable pre-filled links
 - Recon Analyzer rebuilt — 50+ domain-targeted dorks, 6 attack surface categories, risk ratings (Critical/High/Medium), Export .txt, Run All, Copy All, Load into Builder
