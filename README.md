@@ -1,5 +1,10 @@
 # Dorkbase
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c7b6e013-1ffe-40d8-b21a-9e73f7e480b1/deploy-status)](https://app.netlify.com/sites/dorkbase/deploys)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![React](https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
+
 An open-source OSINT dork query builder for security researchers and penetration testers. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
 
 ---
