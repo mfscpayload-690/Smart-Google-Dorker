@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   ShieldCheck, Star, Coffee,
   Terminal, BookOpen, Clock, ScanSearch, Info,
+  Search, Globe, FileText, Link2, AlignLeft,
+  MousePointerClick, Layers, Share2, AlertTriangle,
+  CheckCircle2,
 } from 'lucide-react';
 import GridBackground from '../components/GridBackground';
 import DorkForm from '../components/DorkForm';
@@ -258,49 +261,107 @@ function SectionHeader({ icon, title, desc }) {
 }
 
 function AboutPanel() {
-  const items = [
-    { op: 'site:',     desc: 'Restrict results to a specific domain',          ex: 'site:example.com' },
-    { op: 'filetype:', desc: 'Filter by file extension',                        ex: 'filetype:pdf' },
-    { op: 'inurl:',    desc: 'Match pages with this string in the URL',         ex: 'inurl:admin' },
-    { op: 'intitle:',  desc: 'Match pages with this string in the title',       ex: 'intitle:login' },
-    { op: 'intext:',   desc: 'Match pages containing this string in body text', ex: 'intext:password' },
+  const operators = [
+    { op: 'site:',     icon: Globe,      color: 'text-blue-400',   border: 'border-blue-500/50',   bg: 'bg-blue-500/10',   desc: 'Restrict results to a specific domain',          ex: 'site:example.com' },
+    { op: 'filetype:', icon: FileText,   color: 'text-purple-400', border: 'border-purple-500/50', bg: 'bg-purple-500/10', desc: 'Filter by file extension',                        ex: 'filetype:pdf' },
+    { op: 'inurl:',    icon: Link2,      color: 'text-cyan-400',   border: 'border-cyan-500/50',   bg: 'bg-cyan-500/10',   desc: 'Match pages with this string in the URL',         ex: 'inurl:admin' },
+    { op: 'intitle:',  icon: Search,     color: 'text-green-400',  border: 'border-green-500/50',  bg: 'bg-green-500/10',  desc: 'Match pages with this string in the title',       ex: 'intitle:login' },
+    { op: 'intext:',   icon: AlignLeft,  color: 'text-orange-400', border: 'border-orange-500/50', bg: 'bg-orange-500/10', desc: 'Match pages containing this string in body text', ex: 'intext:password' },
   ];
-  return (
-    <div className="space-y-4">
-      <div className="panel p-5 space-y-3 text-sm text-text-muted leading-relaxed">
-        <p>
-          Google dorking uses advanced search operators to surface information that standard queries miss —
-          exposed directories, specific file types, admin interfaces, and misconfigured servers.
-        </p>
-        <p>
-          Use the <strong className="text-text-primary">Query Builder</strong> to compose queries field by field.
-          Use <strong className="text-text-primary">Templates</strong> to browse pre-built dorks by attack surface.
-          Use <strong className="text-text-primary">Recon Analyzer</strong> to generate a full dork set for a target domain.
-          All queries are saved to <strong className="text-text-primary">History</strong> automatically.
-        </p>
-        <p className="text-xs text-text-dim border-t border-border-subtle pt-3">
-          For authorized security research and educational use only. Do not use against systems you do not own or have explicit permission to test.
-        </p>
-      </div>
 
-      <div className="panel overflow-hidden">
-        <div className="px-4 py-3 border-b border-border-subtle">
-          <span className="label">Operator Reference</span>
+  const features = [
+    { id: 'builder',   icon: Terminal,   label: 'Query Builder',   desc: 'Compose queries field by field with live preview' },
+    { id: 'templates', icon: BookOpen,   label: 'Templates',       desc: '275+ pre-built dorks organized by attack surface' },
+    { id: 'recon',     icon: ScanSearch, label: 'Recon Analyzer',  desc: 'Full dork set for a target domain with risk ratings' },
+    { id: 'history',   icon: Clock,      label: 'History',         desc: 'Last 50 queries saved locally, one-click restore' },
+    { id: 'share',     icon: Share2,     label: 'Share URL',       desc: 'Every query is shareable via a permalink in the URL' },
+  ];
+
+  const steps = [
+    { n: '1', title: 'Pick an engine', body: 'Choose Google, DuckDuckGo, Startpage, or Shodan from the engine selector in the Query Builder.' },
+    { n: '2', title: 'Build your query', body: 'Add operators one by one in the builder, or load a ready-made template from the Templates tab.' },
+    { n: '3', title: 'Run it', body: 'Hit Search — the query opens in a new tab. It\'s also saved to History automatically.' },
+  ];
+
+  return (
+    <div className="space-y-6">
+
+      {/* Quick Start */}
+      <div className="panel card-accent-top overflow-hidden">
+        <div className="px-5 py-3 border-b border-border-subtle">
+          <span className="label">Quick Start</span>
         </div>
-        <div className="divide-y divide-border-subtle">
-          {items.map(item => (
-            <div key={item.op} className="flex items-start gap-4 px-4 py-3">
-              <code className="text-xs font-mono text-accent-light bg-accent/10 px-2 py-0.5 rounded shrink-0 mt-0.5">
-                {item.op}
-              </code>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-text-primary">{item.desc}</p>
-                <p className="text-xs font-mono text-text-dim mt-0.5">{item.ex}</p>
+        <div className="p-5 grid sm:grid-cols-3 gap-4">
+          {steps.map(step => (
+            <div key={step.n} className="flex gap-3">
+              <div className="shrink-0 w-7 h-7 rounded-full bg-accent/15 border border-accent/30 flex items-center justify-center">
+                <span className="text-xs font-bold text-accent-light">{step.n}</span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-text-primary mb-0.5">{step.title}</p>
+                <p className="text-xs text-text-muted leading-relaxed">{step.body}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Features at a glance */}
+      <div>
+        <p className="label mb-3">Features at a glance</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-3">
+          {features.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <div key={f.id} className={`panel p-4 flex gap-3 items-start hover:border-accent/40 transition-colors${i < 3 ? ' lg:col-span-2' : ' lg:col-span-3'}`}>
+                <div className="shrink-0 w-8 h-8 rounded-md bg-accent/10 border border-accent/20 flex items-center justify-center">
+                  <Icon size={15} className="text-accent-light" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-text-primary leading-tight">{f.label}</p>
+                  <p className="text-xs text-text-muted mt-0.5 leading-relaxed">{f.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Operator Reference */}
+      <div className="panel overflow-hidden">
+        <div className="px-5 py-3 border-b border-border-subtle">
+          <span className="label">Operator Reference</span>
+        </div>
+        <div className="divide-y divide-border-subtle">
+          {operators.map(item => {
+            const Icon = item.icon;
+            return (
+              <div key={item.op} className={`flex items-start gap-4 px-5 py-3.5 border-l-2 ${item.border}`}>
+                <div className={`shrink-0 w-7 h-7 rounded-md ${item.bg} flex items-center justify-center mt-0.5`}>
+                  <Icon size={13} className={item.color} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <code className={`text-xs font-mono font-semibold ${item.color}`}>{item.op}</code>
+                    <span className="text-xs text-text-primary">{item.desc}</span>
+                  </div>
+                  <p className="text-xs font-mono text-text-dim">{item.ex}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="flex gap-3 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-3.5">
+        <AlertTriangle size={15} className="text-yellow-400 shrink-0 mt-0.5" />
+        <p className="text-xs text-yellow-300/80 leading-relaxed">
+          <span className="font-semibold text-yellow-300">Authorized use only.</span>{' '}
+          For security research and educational purposes. Do not use against systems you do not own or have explicit written permission to test.
+        </p>
+      </div>
+
     </div>
   );
 }
