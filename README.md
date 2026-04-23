@@ -21,7 +21,7 @@ An open-source OSINT dork query builder for security researchers and penetration
 | React 18 | UI framework |
 | Vite | Build tool and dev server |
 | Tailwind CSS | Styling |
-| gh-pages | GitHub Pages deployment |
+| Netlify | Deployment |
 
 ---
 
@@ -43,7 +43,6 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 npm run dev       # Start development server
 npm run build     # Build for production (outputs to /dist)
 npm run preview   # Preview the production build locally
-npm run deploy    # Deploy to GitHub Pages
 ```
 
 ---
