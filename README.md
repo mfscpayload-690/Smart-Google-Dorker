@@ -1,8 +1,6 @@
-# Smart Google Dorker
+# Dorkbase
 
-A web-based Google dork query builder for security researchers and OSINT practitioners. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
-
-**Live demo:** [mfscpayload-690.github.io/Smart-Google-Dorker](https://mfscpayload-690.github.io/Smart-Google-Dorker/)
+An open-source OSINT dork query builder for security researchers and penetration testers. Craft, preview, and launch advanced search queries across multiple search engines from a single interface.
 
 ---
 
@@ -32,8 +30,7 @@ A web-based Google dork query builder for security researchers and OSINT practit
 **Prerequisites:** Node.js 18+ and npm
 
 ```sh
-git clone https://github.com/mfscpayload-690/Smart-Google-Dorker.git
-cd Smart-Google-Dorker
+git clone https://github.com/mfscpayload-690/dorkbase.git
 npm install
 npm run dev
 ```

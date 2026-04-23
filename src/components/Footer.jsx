@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <ShieldCheck size={16} className="text-accent shrink-0" />
-              <span className="font-semibold text-text-primary text-sm">Smart Google Dorker</span>
+              <span className="font-semibold text-text-primary text-sm">Dorkbase</span>
             </div>
             <p className="text-xs text-text-muted leading-relaxed max-w-xs">
               An open-source OSINT query builder for security researchers and penetration testers.
