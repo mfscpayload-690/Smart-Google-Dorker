@@ -1,35 +1,16 @@
 import React from 'react';
-import { GitFork, Bug, MessageSquare, Star, ExternalLink, ShieldCheck } from 'lucide-react';
+import { GitFork, Bug, MessageSquare, Star, ExternalLink, ShieldCheck, Coffee } from 'lucide-react';
 import GitHubIcon from './GitHubIcon';
 
-const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
-const GITHUB_USER = 'https://github.com/mfscpayload-690';
+const GITHUB_REPO   = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
+const GITHUB_USER   = 'https://github.com/mfscpayload-690';
+const BMC_URL       = 'https://buymeacoffee.com/mfscpayload690';
 
 const links = [
-  {
-    icon: <GitFork size={14} />,
-    label: 'Fork',
-    href: `${GITHUB_REPO}/fork`,
-    description: 'Fork this repo',
-  },
-  {
-    icon: <Star size={14} />,
-    label: 'Star',
-    href: GITHUB_REPO,
-    description: 'Star on GitHub',
-  },
-  {
-    icon: <Bug size={14} />,
-    label: 'Issues',
-    href: `${GITHUB_REPO}/issues`,
-    description: 'Report a bug',
-  },
-  {
-    icon: <MessageSquare size={14} />,
-    label: 'Discussions',
-    href: `${GITHUB_REPO}/discussions`,
-    description: 'Join the discussion',
-  },
+  { icon: <GitFork size={14} />,      label: 'Fork',        href: `${GITHUB_REPO}/fork` },
+  { icon: <Star size={14} />,         label: 'Star',        href: GITHUB_REPO },
+  { icon: <Bug size={14} />,          label: 'Issues',      href: `${GITHUB_REPO}/issues` },
+  { icon: <MessageSquare size={14} />,label: 'Discussions', href: `${GITHUB_REPO}/discussions` },
 ];
 
 export default function Footer() {
@@ -50,16 +31,30 @@ export default function Footer() {
               An open-source OSINT query builder for security researchers and penetration testers.
               Built with React, Vite, and Tailwind CSS.
             </p>
-            <a
-              href={GITHUB_USER}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-3 text-xs text-text-muted hover:text-accent-light transition-colors group"
-            >
-              <GitHubIcon size={13} />
-              <span>mfscpayload-690</span>
-              <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity" />
-            </a>
+
+            {/* Author + BMC */}
+            <div className="flex flex-col gap-2 mt-3">
+              <a
+                href={GITHUB_USER}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-accent-light transition-colors group w-fit"
+              >
+                <GitHubIcon size={13} />
+                <span>mfscpayload-690</span>
+                <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity" />
+              </a>
+
+              <a
+                href={BMC_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 w-fit px-3 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 text-xs font-medium transition-colors"
+              >
+                <Coffee size={13} />
+                Buy me a coffee
+              </a>
+            </div>
           </div>
 
           {/* Contribute links */}
@@ -85,30 +80,12 @@ export default function Footer() {
           <div>
             <p className="label mb-3">Resources</p>
             <div className="flex flex-col gap-2">
-              <a
-                href={`${GITHUB_REPO}/blob/main/README.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-text-muted hover:text-accent-light transition-colors"
-              >
-                Documentation
-              </a>
-              <a
-                href={`${GITHUB_REPO}/blob/main/LICENSE`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-text-muted hover:text-accent-light transition-colors"
-              >
-                MIT License
-              </a>
-              <a
-                href={`${GITHUB_REPO}/releases`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-text-muted hover:text-accent-light transition-colors"
-              >
-                Changelog
-              </a>
+              <a href={`${GITHUB_REPO}/blob/main/README.md`} target="_blank" rel="noopener noreferrer"
+                className="text-xs text-text-muted hover:text-accent-light transition-colors">Documentation</a>
+              <a href={`${GITHUB_REPO}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer"
+                className="text-xs text-text-muted hover:text-accent-light transition-colors">MIT License</a>
+              <a href={`${GITHUB_REPO}/releases`} target="_blank" rel="noopener noreferrer"
+                className="text-xs text-text-muted hover:text-accent-light transition-colors">Changelog</a>
             </div>
           </div>
         </div>
@@ -117,12 +94,8 @@ export default function Footer() {
         <div className="divider pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <p className="text-xs text-text-muted">
             © {new Date().getFullYear()} Aravind Lal. Released under the{' '}
-            <a
-              href={`${GITHUB_REPO}/blob/main/LICENSE`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-accent-light transition-colors underline underline-offset-2"
-            >
+            <a href={`${GITHUB_REPO}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer"
+              className="hover:text-accent-light transition-colors underline underline-offset-2">
               MIT License
             </a>.
           </p>

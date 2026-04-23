@@ -1,10 +1,11 @@
-import { ShieldCheck, Terminal, Star } from 'lucide-react';
+import { ShieldCheck, Terminal, Star, Coffee } from 'lucide-react';
 import GridBackground from './components/GridBackground';
 import DorkForm from './components/DorkForm';
 import Footer from './components/Footer';
 import GitHubIcon from './components/GitHubIcon';
 
 const GITHUB_REPO = 'https://github.com/mfscpayload-690/Smart-Google-Dorker';
+const BMC_URL     = 'https://buymeacoffee.com/mfscpayload690';
 
 export default function App() {
   return (
@@ -17,7 +18,16 @@ export default function App() {
           <ShieldCheck size={20} className="text-accent" />
           <span className="font-semibold text-text-primary text-sm tracking-wide">Smart Google Dorker</span>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2">
+            <a
+              href={BMC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/15 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 transition-colors text-xs font-medium"
+            >
+              <Coffee size={13} />
+              Support
+            </a>
             <a
               href={GITHUB_REPO}
               target="_blank"
@@ -28,7 +38,7 @@ export default function App() {
               <Star size={12} className="group-hover:fill-warn group-hover:text-warn transition-all" />
               Star on GitHub
             </a>
-            <span className="text-xs text-text-muted font-mono hidden sm:block">OSINT / Recon</span>
+            <span className="text-xs text-text-muted font-mono hidden lg:block">OSINT / Recon</span>
           </div>
         </div>
       </header>
