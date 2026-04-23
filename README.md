@@ -19,7 +19,7 @@ An open-source OSINT dork query builder for penetration testers and security res
 Compose dork queries field by field — `site:`, `filetype:`, `inurl:`, `intitle:`, `intext:`, and free-text — with a live preview. Every query state is encoded in the URL so you can share a pre-filled link with a teammate.
 
 **Template Library**
-50+ pre-built dorks across 7 attack surface categories: Exposed Files, Login Panels, Exposed Directories, Credentials & Secrets, Network/IoT, Cloud Storage, and Vulnerability Indicators. Searchable and filterable.
+275+ pre-built dorks across 10 attack surface categories: Exposed Files, Login Panels, Exposed Directories, Credentials & Secrets, Network/IoT Devices, Cloud Storage, Vulnerability Hunting, CMS & Frameworks, Bug Bounty & Disclosure, and Shodan Queries. Searchable and filterable.
 
 **Recon Analyzer**
 Enter a target domain and generate a full recon dork set in one click — categorized by attack surface with Critical / High / Medium risk ratings. Export as `.txt`, copy all, or run all in tabs.

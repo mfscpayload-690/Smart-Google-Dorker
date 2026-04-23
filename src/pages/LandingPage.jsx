@@ -98,7 +98,7 @@ const FEATURES = [
   {
     icon: BookOpen,
     title: 'Template Library',
-    desc: '50+ pre-built dorks across 7 attack surface categories. Search, browse, and load any template into the builder instantly.',
+    desc: '275+ pre-built dorks across 10 attack surface categories. Search, browse, and load any template into the builder instantly.',
     color: 'text-sec',
     bg: 'bg-sec/10',
   },
@@ -239,8 +239,8 @@ export default function LandingPage() {
         <section className="border-y border-border-subtle bg-bg-secondary/40">
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-wrap justify-center gap-x-10 gap-y-3">
             {[
-              { value: '50+',  label: 'Dork Templates' },
-              { value: '6',    label: 'Attack Surface Categories' },
+              { value: '275+', label: 'Dork Templates' },
+              { value: '10',   label: 'Template Categories' },
               { value: '4',    label: 'Search Engines' },
               { value: '100%', label: 'Open Source' },
             ].map(s => (
