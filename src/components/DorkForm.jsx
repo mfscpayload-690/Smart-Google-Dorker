@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { Info, Search, Copy, Check, Globe, ShieldAlert, ChevronDown, ChevronUp, ScanSearch } from 'lucide-react';
+import {
+  Info, Search, Copy, Check, Globe,
+  ShieldAlert, ChevronDown, ChevronUp, ScanSearch,
+} from 'lucide-react';
 import DorkPreview from './DorkPreview';
 
-const initialState = {
-  site: '',
-  keyword: '',
-  filetype: '',
-  inurl: '',
-  intitle: '',
-  intext: '',
-};
+const initialState = { site: '', keyword: '', filetype: '', inurl: '', intitle: '', intext: '' };
 
 const searchEngines = [
   { label: 'Google',     value: 'google',     url: 'https://www.google.com/search?q=' },
@@ -19,13 +15,24 @@ const searchEngines = [
 ];
 
 const tooltips = {
-  site:     'Limit your search to a specific website (e.g., example.com).',
-  filetype: 'Find only certain types of files (e.g., pdf, docx, xls).',
-  inurl:    'Look for pages with these words in the web address (URL).',
-  intitle:  'Find pages with these words in the title.',
-  intext:   'Search for pages containing these words in the main text.',
-  keyword:  'Any other words you want to search for.',
+  site:     'Restrict results to a specific domain (e.g., example.com).',
+  filetype: 'Filter by file extension (e.g., pdf, xls, docx).',
+  inurl:    'Match pages with this string in the URL.',
+  intitle:  'Match pages with this string in the page title.',
+  intext:   'Match pages containing this string in the body text.',
+  keyword:  'Additional free-text terms appended to the query.',
 };
+
+const analyzerTemplates = [
+  'site:{domain} filetype:pdf',
+  'site:{domain} filetype:xls',
+  'site:{domain} inurl:admin',
+  'site:{domain} intitle:index.of',
+  'site:{domain} intext:password',
+  'site:{domain} confidential',
+  'site:{domain} backup',
+  'site:{domain} database',
+];
 
 function buildDork({ site, keyword, filetype, inurl, intitle, intext }) {
   const parts = [];
@@ -38,7 +45,7 @@ function buildDork({ site, keyword, filetype, inurl, intitle, intext }) {
   return parts.join(' ');
 }
 
-function TooltipField({ name, value, onChange, placeholder, colSpan, tooltip, activeTooltip, onShow, onHide }) {
+function InputField({ name, value, onChange, placeholder, colSpan, tooltip, activeTooltip, onShow, onHide }) {
   return (
     <div className={`relative${colSpan ? ' md:col-span-2' : ''}`}>
       <input
@@ -46,22 +53,22 @@ function TooltipField({ name, value, onChange, placeholder, colSpan, tooltip, ac
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="input-cyber w-full pr-9"
+        className="input-field pr-8"
         autoComplete="off"
+        spellCheck={false}
       />
       <button
         type="button"
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-cyberaccent opacity-60 hover:opacity-100 transition"
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-dim hover:text-accent-light transition-colors"
         onMouseEnter={() => onShow(name)}
         onMouseLeave={onHide}
         onClick={() => onShow(name)}
-        tabIndex={0}
-        aria-label={`Info for ${name}`}
+        aria-label={`Info: ${name}`}
       >
-        <Info size={15} />
+        <Info size={13} />
       </button>
       {activeTooltip === name && (
-        <div className="absolute z-20 right-0 top-full mt-1 w-64 bg-black bg-opacity-95 border border-cyberaccent text-cyberaccent text-xs rounded p-2 shadow-xl">
+        <div className="absolute z-30 right-0 top-full mt-1.5 w-60 bg-bg-elevated border border-border-subtle text-text-muted text-xs rounded-md px-3 py-2 shadow-card leading-relaxed">
           {tooltip}
         </div>
       )}
@@ -70,51 +77,33 @@ function TooltipField({ name, value, onChange, placeholder, colSpan, tooltip, ac
 }
 
 export default function DorkForm() {
-  const [fields, setFields]                   = useState(initialState);
-  const [copied, setCopied]                   = useState(false);
-  const [engine, setEngine]                   = useState('google');
-  const [showDorkingInfo, setShowDorkingInfo] = useState(false);
-  const [activeTooltip, setActiveTooltip]     = useState(null);
-  const [showAnalyzer, setShowAnalyzer]       = useState(false);
-  const [analyzeDomain, setAnalyzeDomain]     = useState('');
-  const [analyzerDorks, setAnalyzerDorks]     = useState([]);
-  const [copiedAnalyzerIdx, setCopiedAnalyzerIdx] = useState(null);
+  const [fields, setFields]               = useState(initialState);
+  const [copied, setCopied]               = useState(false);
+  const [engine, setEngine]               = useState('google');
+  const [showInfo, setShowInfo]           = useState(false);
+  const [showAnalyzer, setShowAnalyzer]   = useState(false);
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const [analyzeDomain, setAnalyzeDomain] = useState('');
+  const [analyzerDorks, setAnalyzerDorks] = useState([]);
+  const [copiedIdx, setCopiedIdx]         = useState(null);
 
   const dork = buildDork(fields);
 
-  const handleChange = e => {
-    setFields({ ...fields, [e.target.name]: e.target.value });
-    setCopied(false);
-  };
+  const handleChange = e => { setFields({ ...fields, [e.target.name]: e.target.value }); setCopied(false); };
 
   const handleSubmit = e => {
     e.preventDefault();
     if (!dork) return;
-    const selected = searchEngines.find(se => se.value === engine);
-    const url = selected ? selected.url : searchEngines[0].url;
-    window.open(`${url}${encodeURIComponent(dork)}`, '_blank');
+    const sel = searchEngines.find(s => s.value === engine) ?? searchEngines[0];
+    window.open(`${sel.url}${encodeURIComponent(dork)}`, '_blank');
   };
 
   const handleCopy = () => {
-    try {
-      navigator.clipboard.writeText(dork);
+    navigator.clipboard.writeText(dork).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
-    } catch {
-      setCopied(false);
-    }
+    }).catch(() => {});
   };
-
-  const analyzerTemplates = [
-    'site:{domain} filetype:pdf',
-    'site:{domain} filetype:xls',
-    'site:{domain} inurl:admin',
-    'site:{domain} intitle:index.of',
-    'site:{domain} intext:password',
-    'site:{domain} confidential',
-    'site:{domain} backup',
-    'site:{domain} database',
-  ];
 
   const handleAnalyzerSubmit = e => {
     e.preventDefault();
@@ -123,131 +112,67 @@ export default function DorkForm() {
   };
 
   const handleAnalyzerCopy = (text, idx) => {
-    try {
-      navigator.clipboard.writeText(text);
-      setCopiedAnalyzerIdx(idx);
-      setTimeout(() => setCopiedAnalyzerIdx(null), 1200);
-    } catch {}
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedIdx(idx);
+      setTimeout(() => setCopiedIdx(null), 1200);
+    }).catch(() => {});
   };
 
-  const handleAnalyzerSearch = (q) => {
-    const selected = searchEngines.find(se => se.value === engine);
-    const url = selected ? selected.url : searchEngines[0].url;
-    window.open(`${url}${encodeURIComponent(q)}`, '_blank');
+  const handleAnalyzerSearch = q => {
+    const sel = searchEngines.find(s => s.value === engine) ?? searchEngines[0];
+    window.open(`${sel.url}${encodeURIComponent(q)}`, '_blank');
   };
 
   const fieldDefs = [
-    { name: 'site',     placeholder: 'Site (example.com)' },
-    { name: 'filetype', placeholder: 'Filetype (pdf, txt, xls…)' },
-    { name: 'inurl',    placeholder: 'In URL' },
-    { name: 'intitle',  placeholder: 'In Title' },
-    { name: 'intext',   placeholder: 'In Text' },
-    { name: 'keyword',  placeholder: 'Keyword / Content', colSpan: true },
+    { name: 'site',     placeholder: 'site:' },
+    { name: 'filetype', placeholder: 'filetype:' },
+    { name: 'inurl',    placeholder: 'inurl:' },
+    { name: 'intitle',  placeholder: 'intitle:' },
+    { name: 'intext',   placeholder: 'intext:' },
+    { name: 'keyword',  placeholder: 'keyword / free text', colSpan: true },
   ];
 
   return (
-    <>
-      {/* Toggle buttons */}
-      <div className="flex gap-3 mb-4">
-        <button
-          type="button"
-          className="flex items-center gap-1.5 font-orbitron text-cyberaccent text-sm border border-cyberaccent rounded px-3 py-1.5 hover:bg-cyberaccent hover:text-black transition"
-          onClick={() => setShowDorkingInfo(v => !v)}
-        >
-          <Info size={14} />
-          {showDorkingInfo ? 'Hide Info' : 'What is Dorking?'}
-          {showDorkingInfo ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-        </button>
-        <button
-          type="button"
-          className="flex items-center gap-1.5 font-orbitron text-cyberaccent text-sm border border-cyberaccent rounded px-3 py-1.5 hover:bg-cyberaccent hover:text-black transition"
-          onClick={() => setShowAnalyzer(v => !v)}
-        >
-          <ShieldAlert size={14} />
-          {showAnalyzer ? 'Hide Analyzer' : 'Security Analyzer'}
-          {showAnalyzer ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-        </button>
-      </div>
+    <div className="space-y-5">
 
-      {/* Info panel */}
-      {showDorkingInfo && (
-        <div className="bg-black bg-opacity-70 border border-cyberaccent rounded-md p-4 mb-4 text-matrix text-sm font-sharetech leading-relaxed">
-          <strong>Google dorking</strong> uses advanced search operators to surface information that standard queries miss — specific file types, exposed directories, admin panels, and more.<br /><br />
-          <strong>How to use:</strong> Fill in any combination of fields. Only non-empty fields are included in the query. Click <strong>DORK</strong> to search or <strong>COPY</strong> to grab the raw query string.<br /><br />
-          <strong>Note:</strong> Use this tool for authorized research only. Always respect applicable laws and terms of service.
+      {/* Engine selector */}
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <Globe size={12} className="text-text-muted" />
+          <span className="label">Target Engine</span>
         </div>
-      )}
-
-      {/* Security Analyzer panel */}
-      {showAnalyzer && (
-        <div className="bg-black bg-opacity-70 border border-cyberaccent rounded-md p-4 mb-4 text-matrix text-sm font-sharetech">
-          <form onSubmit={handleAnalyzerSubmit} className="flex flex-col md:flex-row gap-2 mb-3">
-            <input
-              type="text"
-              value={analyzeDomain}
-              onChange={e => setAnalyzeDomain(e.target.value)}
-              placeholder="Target domain (e.g., example.com)"
-              className="input-cyber flex-1"
-              autoComplete="off"
-            />
-            <button type="submit" className="btn-cyber flex items-center gap-2 px-4 py-2 font-orbitron text-sm">
-              <ScanSearch size={15} />
-              Analyze
-            </button>
-          </form>
-          {analyzerDorks.length > 0 && (
-            <div className="space-y-2">
-              {analyzerDorks.map((analyzerDork, idx) => (
-                <div key={idx} className="flex items-center gap-2 bg-black bg-opacity-60 border border-cyberaccent rounded px-3 py-2">
-                  <span className="font-sharetech text-matrix text-xs select-all flex-1">{analyzerDork}</span>
-                  <button
-                    type="button"
-                    className="btn-cyber flex items-center gap-1 px-2 py-1 text-xs font-orbitron"
-                    onClick={() => handleAnalyzerSearch(analyzerDork)}
-                  >
-                    <Search size={11} /> Search
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cyber flex items-center gap-1 px-2 py-1 text-xs font-orbitron"
-                    onClick={() => handleAnalyzerCopy(analyzerDork, idx)}
-                  >
-                    {copiedAnalyzerIdx === idx ? <Check size={11} /> : <Copy size={11} />}
-                    {copiedAnalyzerIdx === idx ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Main form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Search engine selector */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span className="flex items-center gap-1.5 font-orbitron text-matrix text-sm">
-            <Globe size={14} /> Engine
-          </span>
+        <div className="flex flex-wrap gap-2">
           {searchEngines.map(se => (
-            <label key={se.value} className="flex items-center gap-1.5 font-sharetech text-cyberaccent text-sm cursor-pointer">
+            <label
+              key={se.value}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-md border text-sm font-medium cursor-pointer transition-colors
+                ${engine === se.value
+                  ? 'border-accent bg-accent/10 text-accent-light'
+                  : 'border-border-subtle bg-bg-elevated text-text-muted hover:border-accent/50 hover:text-text-primary'
+                }`}
+            >
               <input
                 type="radio"
                 name="engine"
                 value={se.value}
                 checked={engine === se.value}
                 onChange={e => setEngine(e.target.value)}
-                className="accent-cyberaccent"
+                className="sr-only"
               />
               {se.label}
             </label>
           ))}
         </div>
+      </div>
 
-        {/* Input fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="divider" />
+
+      {/* Operator fields */}
+      <div>
+        <span className="label block mb-2">Search Operators</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {fieldDefs.map(f => (
-            <TooltipField
+            <InputField
               key={f.name}
               name={f.name}
               value={fields[f.name]}
@@ -261,28 +186,113 @@ export default function DorkForm() {
             />
           ))}
         </div>
+      </div>
 
-        <DorkPreview dork={dork} />
+      {/* Query preview */}
+      <DorkPreview dork={dork} />
 
-        {/* Action buttons */}
-        <div className="flex items-center gap-3 mt-2">
-          <button
-            type="submit"
-            className="btn-cyber flex items-center gap-2 px-6 py-2 text-base font-orbitron tracking-widest"
-          >
-            <Search size={16} />
-            DORK
-          </button>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="btn-cyber flex items-center gap-2 px-4 py-2 text-base font-orbitron"
-          >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
-            {copied ? 'COPIED' : 'COPY'}
-          </button>
+      {/* Action buttons */}
+      <div className="flex items-center gap-2 pt-1">
+        <button type="button" onClick={handleSubmit} className="btn-primary">
+          <Search size={15} />
+          Run Query
+        </button>
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!dork}
+          className="btn-ghost disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          {copied ? <Check size={15} className="text-success" /> : <Copy size={15} />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+
+      <div className="divider" />
+
+      {/* Collapsible panels */}
+      <div className="flex flex-wrap gap-2">
+        <button type="button" className="btn-pill" onClick={() => setShowInfo(v => !v)}>
+          <Info size={12} />
+          About Dorking
+          {showInfo ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+        </button>
+        <button type="button" className="btn-pill" onClick={() => setShowAnalyzer(v => !v)}>
+          <ShieldAlert size={12} />
+          Recon Analyzer
+          {showAnalyzer ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+        </button>
+      </div>
+
+      {/* Info panel */}
+      {showInfo && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 text-sm text-text-muted leading-relaxed space-y-2">
+          <p>
+            Google dorking uses advanced search operators to surface information that standard queries miss —
+            exposed directories, specific file types, admin interfaces, and misconfigured servers.
+          </p>
+          <p>
+            Fill in any combination of operator fields. Only non-empty fields are included in the final query.
+            Use <strong className="text-text-primary font-semibold">Run Query</strong> to open results in a new tab,
+            or <strong className="text-text-primary font-semibold">Copy</strong> to grab the raw string.
+          </p>
+          <p className="text-xs text-text-dim border-t border-border-subtle pt-2 mt-2">
+            For authorized security research and educational use only.
+          </p>
         </div>
-      </form>
-    </>
+      )}
+
+      {/* Security Analyzer panel */}
+      {showAnalyzer && (
+        <div className="bg-bg-elevated border border-border-subtle rounded-md px-4 py-3 space-y-3">
+          <p className="text-xs text-text-muted">
+            Generate a standard recon dork set for a target domain.
+          </p>
+          <form onSubmit={handleAnalyzerSubmit} className="flex gap-2">
+            <input
+              type="text"
+              value={analyzeDomain}
+              onChange={e => setAnalyzeDomain(e.target.value)}
+              placeholder="target domain (e.g., example.com)"
+              className="input-field flex-1"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <button type="submit" className="btn-primary shrink-0">
+              <ScanSearch size={14} />
+              Analyze
+            </button>
+          </form>
+
+          {analyzerDorks.length > 0 && (
+            <div className="space-y-1.5 pt-1">
+              {analyzerDorks.map((q, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 bg-bg-secondary border border-border-subtle rounded px-3 py-2"
+                >
+                  <span className="font-mono text-xs text-accent-light select-all flex-1 truncate">{q}</span>
+                  <button
+                    type="button"
+                    className="btn-ghost py-1 px-2 text-xs shrink-0"
+                    onClick={() => handleAnalyzerSearch(q)}
+                  >
+                    <Search size={11} /> Search
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-ghost py-1 px-2 text-xs shrink-0"
+                    onClick={() => handleAnalyzerCopy(q, idx)}
+                  >
+                    {copiedIdx === idx ? <Check size={11} className="text-success" /> : <Copy size={11} />}
+                    {copiedIdx === idx ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
